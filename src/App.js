@@ -1,7 +1,9 @@
 import { BrowserRouter as Router, Routes, Route, Outlet } from "react-router-dom";
 import { NavLink } from "react-router-dom";
+import { ErrorBoundary } from "react-error-boundary"
 import img from "./cookimg.jpg";
 import img1 from "./okra-1.jpeg";
+import img2 from "./yps.jpeg";
 import "./App.css";
 import NotFound from "./NotFound.js";
 
@@ -84,8 +86,15 @@ function Recipes() {
 
       <div className="nav-box">
         <img src={img1} className="rec-img " alt="okra soup " />
-        <NavLink to="/recipes/okra" className="okra-nav">
+        <NavLink to="" className="rec-nav">
           Okra Soup
+        </NavLink>
+      </div>
+
+      <div className="nav-box">
+        <img src={img2} className="rec-img " alt="yam pepper soup " />
+        <NavLink to="" className="rec-nav">
+          Yam Pepper Soup
         </NavLink>
       </div>
     </main>
@@ -227,7 +236,6 @@ function SignIn() {
 
         <br />
         <button>Sign In</button>
-        <p>Or sign in with: </p>
       </form>
 
       <h1>
@@ -242,6 +250,7 @@ function SignIn() {
 
 function App() {
   return (
+    <ErrorBoundary FallbackComponent={ErrorFallback}>
     <main className="main-container">
       <Routes>
         <Route path="/" element={<Home />} />
@@ -254,6 +263,7 @@ function App() {
         <Route path="*" element={<NotFound />} />
       </Routes>
     </main>
+  </ErrorBoundary>
   );
 }
 
