@@ -1,5 +1,4 @@
 import {
-  BrowserRouter,
   Routes,
   Route,
   Outlet,
@@ -14,7 +13,7 @@ import NotFound from "./NotFound.js";
 import { useState } from "react";
 import { useUserAuth } from "./context/UserAuthContext";
 import { UserAuthContextProvider } from "./context/UserAuthContext";
-import { Alert } from "react-bootstrap";
+// import { Alert } from "react-bootstrap";
 
 
 function ErrorFallback({ error }) {
@@ -113,7 +112,7 @@ function Recipes() {
 function SignUp() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError ] = useState("")
+  // const [error, setError ] = useState("")
   const {signUp} = useUserAuth ();
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -150,7 +149,7 @@ function SignUp() {
         below
       </h1>
 
-      {error && <Alert variant="danger">{error}</Alert>}
+      {/* {error && <Alert variant="danger">{error}</Alert>} */}
       <form className="sign-form" onSubmit={handleSubmit}>
         {/* <label>
           Full Name:
