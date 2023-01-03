@@ -115,14 +115,14 @@ function SignUp() {
   const [password, setPassword] = useState("");
   const [error, setError ] = useState("")
   const {signUp} = useUserAuth ();
-  const handleSubmit =  (e) => {
-    e.preventDefaiult();
-    // try{
-    //   await signUp(email, password);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try{
+      await signUp(email, password);
 
-    // } catch (err){
+    } catch (err){
 
-    // }
+    }
   } 
 
   return (
@@ -150,14 +150,14 @@ function SignUp() {
         below
       </h1>
 
-{error && <Alert variant="danger">{ error }</Alert>}
-      <form className="sign-form" onSubmit={ handleSubmit }>
+      {error && <Alert variant="danger">{error}</Alert>}
+      <form className="sign-form" onSubmit={handleSubmit}>
         {/* <label>
           Full Name:
           <br />
           <input type="text" name="name" required />
-        </label>
-        <br /> */}
+        </label> */}
+        <br />
 
         <label>
           Email:
@@ -166,7 +166,7 @@ function SignUp() {
             type="email"
             name="email"
             // required
-            onChange={ (e) => setEmail(e.target.value)}
+            onChange={(e) => setEmail(e.target.value)}
           />
         </label>
         <br />
@@ -178,11 +178,11 @@ function SignUp() {
             type="password"
             name="password"
             // required
-            onChange={ (e) => setPassword(e.target.value)}
+            onChange={(e) => setPassword(e.target.value)}
           />
         </label>
 
-        <br/ >
+        <br />
 
         {/* <label>
           Confirm Password:
@@ -191,7 +191,9 @@ function SignUp() {
         </label> */}
         <br />
 
-        <button className="sign-up-btn">Sign Up</button>
+        <button className="sign-up-btn" onClick={ handleSubmit }>
+          Sign Up
+        </button>
       </form>
 
       <h1>Or click the link below to sign up to our weekly newsletter</h1>
