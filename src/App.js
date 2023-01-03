@@ -1,11 +1,21 @@
-import { BrowserRouter as Router, Routes, Route, Outlet } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Outlet,
+} from "react-router-dom";
 import { NavLink } from "react-router-dom";
-import { ErrorBoundary } from "react-error-boundary"
+import { ErrorBoundary } from "react-error-boundary";
 import img from "./cookimg.jpg";
 import img1 from "./okra-1.jpeg";
 import img2 from "./yps.jpeg";
 import "./App.css";
 import NotFound from "./NotFound.js";
+import { useState } from "react";
+import { useUserAuth } from "./context/UserAuthContext";
+import { UserAuthContextProvider } from "./context/UserAuthContext";
+import { Alert } from "react-bootstrap";
+
 
 function ErrorFallback({ error }) {
   return (
@@ -53,7 +63,7 @@ function Home() {
 function Recipes() {
   return (
     <main className="recipe-cont">
-            <section className="nav">
+      <section className="nav">
         <NavLink className="navigate" to="/">
           Home
         </NavLink>
@@ -69,7 +79,6 @@ function Recipes() {
         <NavLink className="navigate" to="/signin">
           Log in
         </NavLink>
-
       </section>
       <h1>Try out some of our recipes</h1>
       <p className="recipe-desc">
@@ -102,6 +111,20 @@ function Recipes() {
 }
 
 function SignUp() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError ] = useState("")
+  const {signUp} = useUserAuth ();
+  const handleSubmit =  (e) => {
+    e.preventDefaiult();
+    // try{
+    //   await signUp(email, password);
+
+    // } catch (err){
+
+    // }
+  } 
+
   return (
     <main className="sign-up">
       <section className="nav">
@@ -127,34 +150,45 @@ function SignUp() {
         below
       </h1>
 
-      <form className="sign-form">
-        <label>
+{error && <Alert variant="danger">{ error }</Alert>}
+      <form className="sign-form" onSubmit={ handleSubmit }>
+        {/* <label>
           Full Name:
           <br />
           <input type="text" name="name" required />
         </label>
-        <br />
+        <br /> */}
 
         <label>
           Email:
           <br />
-          <input type="email" name="email" required />
+          <input
+            type="email"
+            name="email"
+            // required
+            onChange={ (e) => setEmail(e.target.value)}
+          />
         </label>
         <br />
 
         <label>
           Password:
           <br />
-          <input type="password" name="password" required />
+          <input
+            type="password"
+            name="password"
+            // required
+            onChange={ (e) => setPassword(e.target.value)}
+          />
         </label>
 
-        <br />
+        <br/ >
 
-        <label>
+        {/* <label>
           Confirm Password:
           <br />
           <input type="password" name="password" required />
-        </label>
+        </label> */}
         <br />
 
         <button className="sign-up-btn">Sign Up</button>
@@ -168,8 +202,12 @@ function SignUp() {
         <Outlet />
       </div>
 
-      <h2>Already have an account? Login <NavLink className="inline" to="/signin">here</NavLink></h2>
-
+      <h2>
+        Already have an account? Login{" "}
+        <NavLink className="inline" to="/signin">
+          here
+        </NavLink>
+      </h2>
     </main>
   );
 }
@@ -179,15 +217,16 @@ function Newsletter() {
     <section>
       <h1>Weekly Newsletter</h1>
 
-      <form className="news-form"> 
-      <label>
-          <input type="name" name="name" placeholder="Name" requ/>
+      <form className="news-form">
+        <label>
+          <input type="name" name="name" placeholder="Name" required={true}/>
         </label>
 
         <br />
 
         <label>
-          <input type="email" name="email" placeholder="Email" required/>
+          <input type="email" name="email" placeholder="Email" required=
+          {true}/>
         </label>
 
         <br />
@@ -250,20 +289,22 @@ function SignIn() {
 
 function App() {
   return (
-    <ErrorBoundary FallbackComponent={ErrorFallback}>
-    <main className="main-container">
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/recipes" element={<Recipes />} />
+    <UserAuthContextProvider>
+      <ErrorBoundary FallbackComponent={ErrorFallback}>
+        <main className="main-container">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/recipes" element={<Recipes />} />
 
-        <Route path="/signin" element={<SignIn />} />
-        <Route path="/signup" element={<SignUp />}>
-          <Route path="news" element={<Newsletter />} />
-        </Route>
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-    </main>
-  </ErrorBoundary>
+            <Route path="/signin" element={<SignIn />} />
+            <Route path="/signup" element={<SignUp />}>
+              <Route path="news" element={<Newsletter />} />
+            </Route>
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </main>
+      </ErrorBoundary>
+    </UserAuthContextProvider>
   );
 }
 
